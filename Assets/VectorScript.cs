@@ -1,45 +1,65 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class VectorScript : MonoBehaviour {
-
+public class VectorScript : MonoBehaviour
+{
+	bool clicked;
+	public bool foiUsado;
+	Vector3 posicaoInicial;
+	public LayerMask bolaLayer;
+	public float maxVectorDistance;
+	SpringJoint spring;
 	GameObject ball;
+	// Use this for initialization
+	void Start()
+	{
+		posicaoInicial = transform.position;
+		spring = GetComponent<SpringJoint>();
+	}
 
-	Vector3 cliqueInicial, cliqueFinal, vetorResultado;
+	// Update is called once per frame
+	void Update()
+	{
+		transform.position = new Vector3(Mathf.Clamp(transform.position.x, transform.position.x - maxVectorDistance, transform.position.x + maxVectorDistance),
+			Mathf.Clamp(transform.position.y, transform.position.y - maxVectorDistance, transform.position.y + maxVectorDistance), 0);
+		ProcurarBola();
+		if (clicked)
+		{
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			Plane hPlane = new Plane(Vector3.back, transform.position);
+			float dist = 0;
+			if (hPlane.Raycast(ray, out dist))
+			{
+				transform.position = ray.GetPoint(dist);
+			}
+		}
+	}
+	void ProcurarBola()
+	{
+		Collider[] bola = Physics.OverlapSphere(posicaoInicial, 0.1f, bolaLayer);
+		foreach (Collider elemento in bola)
+		{
+			Debug.Log(elemento);
+			if (!foiUsado)
+			{
+				ball = elemento.gameObject;
+				spring.connectedBody = ball.GetComponent<Rigidbody>();
+				Invoke("DesconectaVetor", 0.5f);
+			}
+		}
+	}
 
-	public float multiplicador, valorMin, valorMax;
-
-	bool foiUsado = false;
+	void DesconectaVetor()
+	{
+		spring.connectedBody = null;
+		foiUsado = true;
+	}
 
 	private void OnMouseDown()
 	{
-		cliqueInicial = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+		clicked = true;
 	}
 	private void OnMouseUp()
 	{
-		cliqueFinal = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-		vetorResultado = (cliqueFinal - cliqueInicial) * multiplicador;
-		Debug.Log((vetorResultado) * multiplicador);
-	}
-
-	private void OnTriggerEnter(Collider other)
-	{
-		if (other.gameObject.CompareTag("Bola")&& !foiUsado)
-		{
-			ball = other.gameObject;
-			Rigidbody ballRigid = ball.GetComponent<Rigidbody>();
-			ballRigid.velocity = new Vector3(0, 0, 0);
-			Invoke("VectorJump", 0.5f);
-		}
-	}
-	void VectorJump()
-	{
-		float x = Mathf.Clamp(vetorResultado.x, valorMin, valorMax);
-		float y = Mathf.Clamp(vetorResultado.y, valorMin, valorMax);
-		Rigidbody ballRigid = ball.GetComponent<Rigidbody>();
-		//ballRigid.velocity = new Vector3(0, 0, 0);
-		ballRigid.AddForce(new Vector3(x, y, 0), ForceMode.Impulse);
-		foiUsado = true;
+		clicked = false;
 	}
 }
