@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/NewSceneTestGustavo 1.unity
+- path: Assets/CenaTeste.unity
   isLoaded: 1
   isActive: 1
