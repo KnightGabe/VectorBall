@@ -19,8 +19,6 @@ public class VectorScript : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		transform.position = new Vector3(Mathf.Clamp(transform.position.x, transform.position.x - maxVectorDistance, transform.position.x + maxVectorDistance),
-			Mathf.Clamp(transform.position.y, transform.position.y - maxVectorDistance, transform.position.y + maxVectorDistance), 0);
 		ProcurarBola();
 		if (clicked)
 		{
@@ -29,21 +27,21 @@ public class VectorScript : MonoBehaviour
 			float dist = 0;
 			if (hPlane.Raycast(ray, out dist))
 			{
-				transform.position = ray.GetPoint(dist);
+				transform.position = new Vector3(Mathf.Clamp(ray.GetPoint(dist).x, posicaoInicial.x - maxVectorDistance, posicaoInicial.x + maxVectorDistance),
+			Mathf.Clamp(ray.GetPoint(dist).y, posicaoInicial.y - maxVectorDistance, posicaoInicial.y + maxVectorDistance), 0);
 			}
 		}
 	}
 	void ProcurarBola()
 	{
-		Collider[] bola = Physics.OverlapSphere(posicaoInicial, 0.1f, bolaLayer);
+		Collider[] bola = Physics.OverlapSphere(posicaoInicial, 1f, bolaLayer);
 		foreach (Collider elemento in bola)
-		{
-			Debug.Log(elemento);
+		{ 
 			if (!foiUsado)
 			{
 				ball = elemento.gameObject;
 				spring.connectedBody = ball.GetComponent<Rigidbody>();
-				Invoke("DesconectaVetor", 0.5f);
+				Invoke("DesconectaVetor", 0.4f);
 			}
 		}
 	}
