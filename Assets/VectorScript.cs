@@ -4,16 +4,16 @@ public class VectorScript : MonoBehaviour
 {
 	bool clicked;
 	public bool foiUsado;
-	Vector3 posicaoInicial;
+	Vector2 posicaoInicial, posicaoCamera;
 	public LayerMask bolaLayer;
 	public float maxVectorDistance;
-	SpringJoint spring;
+	SpringJoint2D spring;
 	GameObject ball;
 	// Use this for initialization
 	void Start()
 	{
 		posicaoInicial = transform.position;
-		spring = GetComponent<SpringJoint>();
+		spring = GetComponent<SpringJoint2D>();
 	}
 
 	// Update is called once per frame
@@ -34,13 +34,13 @@ public class VectorScript : MonoBehaviour
 	}
 	void ProcurarBola()
 	{
-		Collider[] bola = Physics.OverlapSphere(posicaoInicial, 1f, bolaLayer);
-		foreach (Collider elemento in bola)
+		Collider2D bola = Physics2D.OverlapCircle(posicaoInicial, 1f, bolaLayer);
+		if(bola!= null)
 		{ 
 			if (!foiUsado)
 			{
-				ball = elemento.gameObject;
-				spring.connectedBody = ball.GetComponent<Rigidbody>();
+				ball = bola.gameObject;
+				spring.connectedBody = ball.GetComponent<Rigidbody2D>();
 				Invoke("DesconectaVetor", 0.4f);
 			}
 		}
