@@ -295,9 +295,6 @@
     <Compile Include="Assets\ScriptBola.cs" />
     <Compile Include="Assets\VectorScript.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\012 - Butterfree\HELP AND README.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

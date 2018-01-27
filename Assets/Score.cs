@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Score : MonoBehaviour {
 
-    public void OnTriggerEnter(Collider other) {
-        Debug.Log("Pontos");
+    public void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "Coletavel") {
+            Debug.Log("Pontos");
+            //TODO adicionar pontos no game manager
+            other.GetComponent<Coletavel>().SelfDestruct();
+        }
     }
 }
