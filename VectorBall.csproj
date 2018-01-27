@@ -291,6 +291,7 @@
     <Compile Include="Assets\Coletavel.cs" />
     <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\moveCamera.cs" />
+    <Compile Include="Assets\Score.cs" />
     <Compile Include="Assets\ScriptBola.cs" />
     <Compile Include="Assets\VectorScript.cs" />
   </ItemGroup>
