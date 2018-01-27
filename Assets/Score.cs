@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Score : MonoBehaviour {
 
+    private int point;
+
     public void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Coletavel") {
             Debug.Log("Pontos");
-            //TODO adicionar pontos no game manager
+            point = other.GetComponent<Coletavel>().pointValue;
+            GameObject.FindObjectOfType<GameManager>().SetScore(point);
             other.GetComponent<Coletavel>().SelfDestruct();
         }
     }
