@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class ScriptBola : MonoBehaviour {
 
-	
+	public bool emContato = false;
+	public bool passou = false;
+
+	Rigidbody rb;
 	// Use this for initialization
-	void Start () {
-		
+	void Start()
+	{
+		rb = GetComponent<Rigidbody>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	private void OnTriggerExit(Collider other)
+	{
+		if(emContato && other.gameObject.CompareTag("Vetor"))
+		{
+			passou = true;
+		}
 	}
 }
