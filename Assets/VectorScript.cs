@@ -33,7 +33,7 @@ public class VectorScript : MonoBehaviour {
 			Invoke("VectorJump", 0.5f);
 		}
 	}
-	void VectorJump(Collider other)
+	void VectorJump()
 	{
 		float x = Mathf.Clamp(vetorResultado.x, valorMin, valorMax);
 		float y = Mathf.Clamp(vetorResultado.y, valorMin, valorMax);
