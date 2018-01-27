@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bola
   - Coletavel
+  - ScoreBar
   layers:
   - Default
   - TransparentFX

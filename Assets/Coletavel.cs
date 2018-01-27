@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Coletavel : MonoBehaviour {
 
-    public void OnTriggerEnter(Collider other) {
-        if (other.tag == "Coletavel") {
-            Debug.Log("pontos");
-        }
+    public GameObject Particula;
+
+    public int pointValue;
+
+    public void SelfDestruct() {
+        GameObject clone = Instantiate(Particula, transform.position, Quaternion.identity);
+        Destroy(clone, 2f);
+        Destroy(gameObject);
     }
 }
