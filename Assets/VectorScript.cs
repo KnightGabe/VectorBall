@@ -4,16 +4,16 @@ public class VectorScript : MonoBehaviour
 {
 	bool clicked;
 	public bool foiUsado;
-	Vector2 posicaoInicial, posicaoCamera;
+	Vector2 posicaoInicial, posicaoCamera, posicaoFinal, vetorResultante;
 	public LayerMask bolaLayer;
-	public float maxVectorDistance;
-	SpringJoint2D spring;
+	public float maxVectorDistance, multiplicador;
+	//SpringJoint2D spring;
 	GameObject ball;
 	// Use this for initialization
 	void Start()
 	{
 		posicaoInicial = transform.position;
-		spring = GetComponent<SpringJoint2D>();
+		//spring = GetComponent<SpringJoint2D>();
 	}
 
 	// Update is called once per frame
@@ -40,16 +40,19 @@ public class VectorScript : MonoBehaviour
 			if (!foiUsado)
 			{
 				ball = bola.gameObject;
-				spring.connectedBody = ball.GetComponent<Rigidbody2D>();
-				Invoke("DesconectaVetor", 0.4f);
+				Rigidbody2D rigid = ball.GetComponent<Rigidbody2D>();
+				rigid.velocity = new Vector2(0, 0);
+				//spring.connectedBody = ball.GetComponent<Rigidbody2D>();
+				Invoke("DesconectaVetor", 0.1f);
+				foiUsado = true;
 			}
 		}
 	}
 
 	void DesconectaVetor()
 	{
-		spring.connectedBody = null;
-		foiUsado = true;
+		//spring.connectedBody = null;
+		ball.GetComponent<Rigidbody2D>().AddForce((vetorResultante)*multiplicador, ForceMode2D.Impulse);
 	}
 
 	private void OnMouseDown()
@@ -59,5 +62,7 @@ public class VectorScript : MonoBehaviour
 	private void OnMouseUp()
 	{
 		clicked = false;
+		posicaoFinal = transform.position;
+		vetorResultante = new Vector2((((posicaoFinal.x-posicaoInicial.x)/maxVectorDistance))*100, ((posicaoFinal.y-posicaoInicial.y)/maxVectorDistance)*100);
 	}
 }
