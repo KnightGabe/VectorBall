@@ -3,10 +3,11 @@
 public class VectorScript : MonoBehaviour
 {
 	bool clicked;
-	public bool foiUsado;
-	Vector2 posicaoInicial, posicaoCamera, posicaoFinal, vetorResultante;
+	public bool foiUsado, beenSet;
+	Vector2 posicaoInicial, posicaoCamera, posicaoFinal;
+	public Vector2 vetorResultante;
 	public LayerMask bolaLayer;
-	public float maxVectorDistance, multiplicador;
+	public float maxVectorDistance, multiplicador, raioDeteccao;
 	//SpringJoint2D spring;
 	GameObject ball;
 	// Use this for initialization
@@ -34,7 +35,7 @@ public class VectorScript : MonoBehaviour
 	}
 	void ProcurarBola()
 	{
-		Collider2D bola = Physics2D.OverlapCircle(posicaoInicial, 1f, bolaLayer);
+		Collider2D bola = Physics2D.OverlapCircle(posicaoInicial, raioDeteccao, bolaLayer);
 		if(bola!= null)
 		{ 
 			if (!foiUsado)
@@ -57,12 +58,16 @@ public class VectorScript : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-		clicked = true;
+		if (!beenSet)
+		{
+			clicked = true;
+		}
 	}
 	private void OnMouseUp()
 	{
 		clicked = false;
 		posicaoFinal = transform.position;
 		vetorResultante = new Vector2((((posicaoFinal.x-posicaoInicial.x)/maxVectorDistance))*100, ((posicaoFinal.y-posicaoInicial.y)/maxVectorDistance)*100);
+		beenSet = true;
 	}
 }
